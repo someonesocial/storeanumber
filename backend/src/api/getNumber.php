@@ -1,5 +1,14 @@
 <?php
-$userId = 1; // Assuming authenticated user ID
+header('Content-Type: application/json');
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Not authenticated']);
+    exit;
+}
+
+$userId = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("SELECT number FROM users WHERE id = ?");
 $stmt->bind_param("i", $userId);

@@ -1,7 +1,16 @@
 <?php
+header('Content-Type: application/json');
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Not authenticated']);
+    exit;
+}
+
 $data = json_decode(file_get_contents("php://input"), true);
 $number = $data['number'];
-$userId = 1; // Assuming authenticated user ID
+$userId = $_SESSION['user_id'];
 
 $stmt = $conn->prepare("UPDATE users SET number = ? WHERE id = ?");
 $stmt->bind_param("ii", $number, $userId);

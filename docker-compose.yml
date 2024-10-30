@@ -8,6 +8,8 @@ services:
       - /app/node_modules
     environment:
       - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
 
   backend:
     build: ./backend

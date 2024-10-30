@@ -1,0 +1,7 @@
+{
+    "name": "xnorroid/storeanumber",
+    "description": "a web application that allows users to store a number",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}

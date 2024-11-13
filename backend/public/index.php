@@ -8,6 +8,8 @@ $conn = $database->getConnection();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_SERVER['REQUEST_URI'] === '/api/login') {
         require_once '../src/api/login.php';
+    } elseif ($_SERVER['REQUEST_URI'] === '/api/register') {
+        require_once '../src/api/register.php';
     } elseif ($_SERVER['REQUEST_URI'] === '/api/saveNumber') {
         require_once '../src/api/saveNumber.php';
     }

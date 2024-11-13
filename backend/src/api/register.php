@@ -2,39 +2,35 @@
 header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
-$username = $data['username'];
-$password = $data['password'];
+
+if (!isset($data['username']) || !isset($data['password'])) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Username and password are required']);
+    exit;
+}
 
 // Check if username already exists
-$stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
+$checkStmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+$checkStmt->bind_param("s", $data['username']);
+$checkStmt->execute();
+$result = $checkStmt->get_result();
 
 if ($result->num_rows > 0) {
-    http_response_code(400);
+    http_response_code(409);
     echo json_encode(['error' => 'Username already exists']);
     exit;
 }
 
-// Hash password and create user
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+$username = $data['username'];
+$password = password_hash($data['password'], PASSWORD_DEFAULT);
+
 $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-$stmt->bind_param("ss", $username, $hashedPassword);
+$stmt->bind_param("ss", $username, $password);
 
 if ($stmt->execute()) {
-    $userId = $stmt->insert_id;
-    $user = [
-        'id' => $userId,
-        'username' => $username
-    ];
-
-    session_start();
-    $_SESSION['user_id'] = $userId;
-
     http_response_code(201);
-    echo json_encode(['user' => $user]);
+    echo json_encode(['message' => 'User registered successfully']);
 } else {
     http_response_code(500);
-    echo json_encode(['error' => 'Failed to create user']);
+    echo json_encode(['error' => 'Registration failed']);
 }

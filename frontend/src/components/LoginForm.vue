@@ -19,7 +19,6 @@
       </p>
       <p v-if="error" class="error">{{ error }}</p>
     </div>
-
     <div v-else>
       <h2>Register</h2>
       <form @submit.prevent="handleRegister" class="form">
@@ -41,10 +40,8 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapActions, mapState } from 'vuex'
-
 export default {
   name: 'LoginForm',
   data() {
@@ -80,32 +77,27 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .login-container {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
 }
-
 .form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
-
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-
 .input {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
-
 .button {
   padding: 10px;
   background-color: #4CAF50;
@@ -114,11 +106,9 @@ export default {
   border-radius: 4px;
   cursor: pointer;
 }
-
 .button:hover {
   background-color: #45a049;
 }
-
 .error {
   color: red;
   margin-top: 10px;

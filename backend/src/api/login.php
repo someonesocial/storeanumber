@@ -1,9 +1,23 @@
 <?php
 header('Content-Type: application/json');
+require_once '../config.php';
+require_once '../Database.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
-$username = $data['username'];
-$password = $data['password'];
+$database = new Database();
+$conn = $database->getConnection();
+
+$data = json_decode(file_get_contents('php://input'), true);
+$username = $data['username'] ?? '';
+$password = $data['password'] ?? '';
+
+// Log received data
+error_log("Login attempt: Username: $username");
+
+if (empty($username) || empty($password)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Username and password are required']);
+    exit;
+}
 
 $stmt = $conn->prepare("SELECT id, username, password FROM users WHERE username = ?");
 $stmt->bind_param("s", $username);
@@ -23,6 +37,9 @@ if ($result->num_rows > 0) {
 
         http_response_code(200);
         echo json_encode(['user' => $userData]);
+
+        // Log successful login
+        error_log("Login successful: Username: $username");
         exit;
     }
 }

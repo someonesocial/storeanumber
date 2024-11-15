@@ -5,6 +5,11 @@ import App from "./App.vue";
 import LoginForm from "./components/LoginForm.vue";
 import NumberDisplay from "./components/NumberDisplay.vue";
 
+const apiBaseUrl = import.meta.env.VITE_API_URL || "/api";
+
+// Add axios defaults for credentials
+axios.defaults.withCredentials = true;
+
 const store = createStore({
   state: {
     user: null,
@@ -17,18 +22,32 @@ const store = createStore({
     setNumber(state, number) {
       state.number = number;
     },
+    clearUser(state) {
+      state.user = null;
+      state.number = null;
+    },
   },
   actions: {
     async login({ commit }, { username, password }) {
-      const response = await axios.post("/api/login", { username, password });
+      const response = await axios.post(`${apiBaseUrl}/login`, {
+        username,
+        password,
+      });
       commit("setUser", response.data.user);
     },
+    async register({ commit }, { username, password }) {
+      await axios.post(`${apiBaseUrl}/register`, { username, password });
+    },
+    async logout({ commit }) {
+      await axios.post(`${apiBaseUrl}/logout`);
+      commit("clearUser");
+    },
     async getNumber({ commit }) {
-      const response = await axios.get("/api/getNumber");
+      const response = await axios.get(`${apiBaseUrl}/getNumber`);
       commit("setNumber", response.data.number);
     },
     async saveNumber({ commit }, number) {
-      await axios.post("/api/saveNumber", { number });
+      await axios.post(`${apiBaseUrl}/saveNumber`, { number });
       commit("setNumber", number);
     },
   },

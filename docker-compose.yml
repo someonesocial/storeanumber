@@ -5,6 +5,8 @@ services:
       - "8080:8080"
     environment:
       - VITE_API_URL=/api  # Changed to use relative path
+    volumes:
+      - ./.env:/app/.env:ro  # Mount root .env file
     networks:
       - app-network
     depends_on:
@@ -25,6 +27,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/var/www/html
+      - ./.env:/var/www/html/.env:ro  # Mount root .env file
 
   db:
     image: mariadb:latest

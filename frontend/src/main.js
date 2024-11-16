@@ -10,43 +10,29 @@ const apiBaseUrl = import.meta.env.VITE_API_URL || "/api";
 // Add axios defaults for credentials
 axios.defaults.withCredentials = true;
 
+// Store setup
 const store = createStore({
-  state: {
-    user: null,
-    number: null,
-  },
+  state: { user: null, number: null },
   mutations: {
-    setUser(state, user) {
-      state.user = user;
-    },
-    setNumber(state, number) {
-      state.number = number;
-    },
-    clearUser(state) {
+    setUser: (state, user) => (state.user = user),
+    setNumber: (state, number) => (state.number = number),
+    clearUser: (state) => {
       state.user = null;
       state.number = null;
     },
   },
   actions: {
-    async login({ commit }, { username, password }) {
-      const response = await axios.post(`${apiBaseUrl}/login`, {
-        username,
-        password,
-      });
-      commit("setUser", response.data.user);
+    login: async ({ commit }, credentials) => {
+      const { data } = await axios.post(`${apiBaseUrl}/login`, credentials);
+      commit("setUser", data.user);
     },
-    async register({ commit }, { username, password }) {
-      await axios.post(`${apiBaseUrl}/register`, { username, password });
+    register: ({ commit }, credentials) =>
+      axios.post(`${apiBaseUrl}/register`, credentials),
+    getNumber: async ({ commit }) => {
+      const { data } = await axios.get(`${apiBaseUrl}/getNumber`);
+      commit("setNumber", data.number);
     },
-    async logout({ commit }) {
-      await axios.post(`${apiBaseUrl}/logout`);
-      commit("clearUser");
-    },
-    async getNumber({ commit }) {
-      const response = await axios.get(`${apiBaseUrl}/getNumber`);
-      commit("setNumber", response.data.number);
-    },
-    async saveNumber({ commit }, number) {
+    saveNumber: async ({ commit }, number) => {
       await axios.post(`${apiBaseUrl}/saveNumber`, { number });
       commit("setNumber", number);
     },

@@ -3,7 +3,6 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../src/config.php';
 require_once __DIR__ . '/../../src/Database.php';
 
-// No need for session_start() as it's already started in index.php
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Not authenticated']);

@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <h1>Number Storage App</h1>
+    <h1>storeanumber</h1>
     <LoginForm v-if="!user" />
     <NumberDisplay v-else />
   </div>

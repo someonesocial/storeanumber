@@ -1,172 +1,129 @@
-# Store-A-Number Web-Anwendung
+# Technische Dokumentation - Webanwendung "storeanumber"
 
-## Projektbeschreibung
+## Inhaltsverzeichnis
 
-Diese Webanwendung wurde im Rahmen eines Studienprojekts entwickelt. Sie ermöglicht Benutzern, sich zu registrieren, anzumelden und eine Nummer zu speichern. Die Anwendung demonstriert die Implementierung einer modernen Full-Stack-Webanwendung.
+1. Systemarchitektur
+2. Frontend
+3. Backend
+4. Datenbank
+5. Installation
 
-## Technologie-Stack
+## Systemarchitektur
 
-### Frontend
+Die Anwendung verwendet eine moderne 3-Tier-Architektur:
 
-- **Vue.js 3**
-  - Composition API
-  - Vue Router für Routing
-  - Single File Components
-  - Reactive Data Management
-- **Vuex 4**
-  - Zentrales State Management
-  - Benutzer-Authentifizierung
-  - Persistente Datenspeicherung
-- **Axios**
-  - HTTP-Client für API-Kommunikation
-  - Interceptors für Auth-Header
-  - Error Handling
-- **Vite**
-  - Hot Module Replacement (HMR)
-  - Schnelle Build-Zeiten
-  - Optimierte Asset-Verarbeitung
+```mermaid
+graph TB
+    Client[Browser/Frontend] -- HTTP/AJAX --> NGINX[NGINX Reverse Proxy]
+    NGINX -- /api/* --> PHP[PHP Backend]
+    PHP -- SQL --> DB[(MariaDB)]
+```
 
-### Backend
+### Technologie-Stack
 
-- **PHP 8.2**
-  - Objektorientierte Architektur
-  - Session Management
-  - Sichere Passwort-Verschlüsselung
-- **Apache Webserver**
-  - Mod_rewrite für URL-Routing
-  - Sichere SSL/TLS-Konfiguration
-  - Access Control
-- **MariaDB**
-  - Relationale Datenbank
-  - Prepared Statements
-  - Transaktionssicherheit
-- **Composer**
-  - Dependency Management
-  - Autoloading
-  - PHPDotenv für Konfiguration
+- **Frontend**: Vue.js 3 + Vite
+- **Backend**: PHP 8.2 + Apache
+- **Datenbank**: MariaDB
+- **Proxy**: NGINX
+- **Container**: Docker + Docker Compose
 
-### Infrastruktur
+## Frontend
 
-- **Docker & Docker Compose**
-  - Multi-Container-Setup
-  - Development/Production Environments
-  - Volume Management
-- **Nginx**
-  - Reverse Proxy
-  - SSL Termination
-  - Load Balancing
-- **Docker Networking**
-  - Isolierte Container-Netzwerke
-  - Service Discovery
-  - Sicherer Container-Kommunikation
+Das Frontend basiert auf Vue.js 3 und verwendet folgende Hauptkomponenten:
+
+-
+
+App.vue
+
+: Root-Komponente
+
+-
+
+LoginForm.vue
+
+: Authentifizierung
+
+-
+
+NumberDisplay.vue
+
+: Hauptfunktionalität
+
+Der State wird zentral mit Vuex verwaltet:
+
+```js
+const store = createStore({
+  state: {
+    user: null,
+    number: null,
+  },
+  mutations: {
+    setUser: (state, user) => (state.user = user),
+    setNumber: (state, number) => (state.number = number),
+  },
+});
+```
+
+## Backend
+
+Das PHP-Backend implementiert eine REST-API mit folgenden Endpunkten:
+
+| Endpunkt          | Methode | Funktion          |
+| ----------------- | ------- | ----------------- |
+| `/api/login`      | POST    | Benutzeranmeldung |
+| `/api/register`   | POST    | Registrierung     |
+| `/api/getNumber`  | GET     | Nummer abrufen    |
+| `/api/saveNumber` | POST    | Nummer speichern  |
+
+Die
+
+MessageHandler
+
+Klasse generiert humorvolle Nachrichten basierend auf der gespeicherten Nummer.
+
+## Datenbank
+
+Das Datenbankschema wird in
+
+init.sql
+
+definiert:
+
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255),
+    number INT DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ## Installation
 
-### Voraussetzungen
-
-- Docker und Docker Compose
-- Git
-
-### Setup
+1. Klonen des Repositories:
 
 ```bash
-# Repository klonen
-git clone https://github.com/someonesocial/storeanumber
+git clone <repository-url>
+```
 
-# In das Projektverzeichnis wechseln
-cd storeanumber
+2. Umgebungsvariablen konfigurieren in
 
-# Frontend-Dependencies installieren
-cd frontend
-npm install
+.env
 
-# Backend-Dependencies installieren
-cd backend
-composer install
+:
 
-# Docker-Container starten
+```
+DB_NAME=numberdb
+DB_USER=appuser
+DB_PASSWORD=userpassword
+DB_HOST=db
+```
+
+3. Container starten:
+
+```bash
 docker-compose up -d
 ```
 
-## Projektstruktur
-
-```
-.
-├── backend/                 # PHP Backend
-│   ├── src/                # PHP Quellcode
-│   ├── public/             # Öffentliche Dateien
-│   └── Dockerfile
-├── frontend/               # Vue.js Frontend
-│   ├── src/               # Frontend Quellcode
-│   ├── public/            # Statische Dateien
-│   └── Dockerfile
-├── database/              # Datenbank
-│   └── init.sql          # Initialisierungsskript
-└── docker-compose.yml    # Container-Orchestrierung
-```
-
-## API-Dokumentation
-
-### Authentifizierung
-
-Alle authentifizierten Endpunkte erfordern einen gültigen Session-Cookie.
-
-### API-Endpunkte
-
-| Endpunkt        | Methode | Beschreibung          | Authentifizierung |
-| --------------- | ------- | --------------------- | ----------------- |
-| /api/register   | POST    | Benutzerregistrierung | Nein              |
-| /api/login      | POST    | Benutzeranmeldung     | Nein              |
-| /api/logout     | POST    | Abmelden              | Ja                |
-| /api/saveNumber | POST    | Nummer speichern      | Ja                |
-| /api/getNumber  | GET     | Nummer abrufen        | Ja                |
-
-## Sicherheitsmerkmale
-
-- Session-basierte Authentifizierung
-- CORS-Konfiguration
-- HTTP-Only Cookies
-- Prepared Statements für SQL
-- Sichere Passwort-Hashing
-- XSS-Schutz
-- CSRF-Schutz
-
-## Entwicklungsumgebung
-
-### Frontend-Entwicklung
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Backend-Entwicklung
-
-```bash
-cd backend
-composer install
-```
-
-## Architektur
-
-### Frontend
-
-- Single Page Application (SPA)
-- Komponenten-basierte Architektur
-- Zentrales State Management
-- Reaktive Datenbindung
-
-### Backend
-
-- REST-API
-- MVC-Architektur
-- PDO für Datenbankzugriffe
-- Umgebungsvariablen-Konfiguration
-
-## Testumgebung
-
-Die Anwendung kann lokal unter folgenden URLs erreicht werden:
-
-- Frontend: http://localhost:8080
-- Backend API: http://localhost:8080/api
+Die Anwendung ist dann unter http://localhost:8080 erreichbar.

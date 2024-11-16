@@ -36,6 +36,10 @@ const store = createStore({
       await axios.post(`${apiBaseUrl}/saveNumber`, { number });
       commit("setNumber", number);
     },
+    logout: async ({ commit }) => {
+      await axios.post(`${apiBaseUrl}/logout`);
+      commit("clearUser");
+    },
   },
 });
 

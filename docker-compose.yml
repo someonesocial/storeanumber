@@ -4,20 +4,22 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - VITE_API_URL=http://localhost:8000/api
+      - VITE_API_URL=/api  # Changed to use relative path
+    networks:
+      - app-network
     depends_on:
-      backend:
-        condition: service_started
+      - backend
 
   backend:
     build: ./backend
-    ports:
-      - "80:80"
+    # Remove port 80 exposure if not needed externally
     environment:
       - DB_HOST=db
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
+    networks:
+      - app-network
     depends_on:
       db:
         condition: service_healthy
@@ -34,14 +36,18 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
     healthcheck:
       test: ["CMD", "mariadb", "-u${DB_USER}", "-p${DB_PASSWORD}", "-e", "SELECT 1;"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 30s
-    ports:
-      - "3306:3306"
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   db_data:

@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
-require_once '../config.php';
-require_once '../Database.php';
+require_once __DIR__ . '/../../src/config.php';  // Fix path using __DIR__
+require_once __DIR__ . '/../../src/Database.php';
 
 $database = new Database();
 $conn = $database->getConnection();
@@ -27,7 +27,7 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     if (password_verify($password, $user['password'])) {
-        session_start();
+        // No need to start session here as it's already started in index.php
         $_SESSION['user_id'] = $user['id'];
 
         $userData = [

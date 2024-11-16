@@ -15,6 +15,11 @@ class MessageHandler
 
     public function getFunnyMessage()
     {
+        // Add early return if number is null
+        if ($this->number === null) {
+            return null; // Or return a specific message for new users
+        }
+
         // Check for special cases
         if ($this->number === (int)$this->username) {
             return "Your number matches your username! Are you not very creative? 😄";

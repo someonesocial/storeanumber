@@ -8,23 +8,57 @@ Diese Webanwendung wurde im Rahmen eines Studienprojekts entwickelt. Sie ermögl
 
 ### Frontend
 
-- Vue.js 3 (Frontend-Framework)
-- Vuex (State Management)
-- Axios (HTTP-Client)
-- Vite (Build-Tool)
+- **Vue.js 3**
+  - Composition API
+  - Vue Router für Routing
+  - Single File Components
+  - Reactive Data Management
+- **Vuex 4**
+  - Zentrales State Management
+  - Benutzer-Authentifizierung
+  - Persistente Datenspeicherung
+- **Axios**
+  - HTTP-Client für API-Kommunikation
+  - Interceptors für Auth-Header
+  - Error Handling
+- **Vite**
+  - Hot Module Replacement (HMR)
+  - Schnelle Build-Zeiten
+  - Optimierte Asset-Verarbeitung
 
 ### Backend
 
-- PHP 8.2
-- Apache Webserver
-- MariaDB (Datenbank)
-- Composer (PHP-Abhängigkeiten)
+- **PHP 8.2**
+  - Objektorientierte Architektur
+  - Session Management
+  - Sichere Passwort-Verschlüsselung
+- **Apache Webserver**
+  - Mod_rewrite für URL-Routing
+  - Sichere SSL/TLS-Konfiguration
+  - Access Control
+- **MariaDB**
+  - Relationale Datenbank
+  - Prepared Statements
+  - Transaktionssicherheit
+- **Composer**
+  - Dependency Management
+  - Autoloading
+  - PHPDotenv für Konfiguration
 
 ### Infrastruktur
 
-- Docker & Docker Compose
-- Nginx (Reverse Proxy)
-- Docker Networking
+- **Docker & Docker Compose**
+  - Multi-Container-Setup
+  - Development/Production Environments
+  - Volume Management
+- **Nginx**
+  - Reverse Proxy
+  - SSL Termination
+  - Load Balancing
+- **Docker Networking**
+  - Isolierte Container-Netzwerke
+  - Service Discovery
+  - Sicherer Container-Kommunikation
 
 ## Installation
 
@@ -41,6 +75,14 @@ git clone https://github.com/someonesocial/storeanumber
 
 # In das Projektverzeichnis wechseln
 cd storeanumber
+
+# Frontend-Dependencies installieren
+cd frontend
+npm install
+
+# Backend-Dependencies installieren
+cd backend
+composer install
 
 # Docker-Container starten
 docker-compose up -d
@@ -63,7 +105,13 @@ docker-compose up -d
 └── docker-compose.yml    # Container-Orchestrierung
 ```
 
-## API-Endpunkte
+## API-Dokumentation
+
+### Authentifizierung
+
+Alle authentifizierten Endpunkte erfordern einen gültigen Session-Cookie.
+
+### API-Endpunkte
 
 | Endpunkt        | Methode | Beschreibung          | Authentifizierung |
 | --------------- | ------- | --------------------- | ----------------- |
@@ -115,14 +163,6 @@ composer install
 - MVC-Architektur
 - PDO für Datenbankzugriffe
 - Umgebungsvariablen-Konfiguration
-
-## Deployment
-
-Die Anwendung ist vollständig containerisiert und kann mit einem Befehl deployt werden:
-
-```bash
-docker-compose up -d --build
-```
 
 ## Testumgebung
 

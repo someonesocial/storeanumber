@@ -3,6 +3,7 @@
     <h2>Your Number</h2>
     <div v-if="number !== null" class="current-number">
       <p>Your stored number is: {{ number }}</p>
+      <p v-if="funnyMessage" class="funny-message">{{ funnyMessage }}</p>
       <button @click="showEditForm = true" class="button">Edit Number</button>
     </div>
     <p v-else>You haven't stored a number yet.</p>
@@ -33,31 +34,37 @@ export default {
       newNumber: null,
       showEditForm: false,
       error: null,
-      success: null
+      success: null,
+      funnyMessage: null
     }
   },
   computed: {
     ...mapState(['user', 'number'])
   },
-  created() {
+  async created() {
     if (this.user) {
-      this.getNumber()
+      const response = await this.getNumber();
+      this.funnyMessage = response.funnyMessage;
     }
   },
   methods: {
     ...mapActions(['getNumber', 'saveNumber', 'logout']),
     async handleSaveNumber() {
       try {
-        this.error = null
-        await this.saveNumber(this.newNumber)
-        this.success = 'Number saved successfully!'
-        this.showEditForm = false
-        this.newNumber = null
+        this.error = null;
+        await this.saveNumber(this.newNumber);
+        // Update the number and get any funny message
+        const response = await this.getNumber();
+        this.funnyMessage = response.funnyMessage;
+        this.success = 'Number saved successfully!';
+        this.showEditForm = false;
+        this.newNumber = null;
         setTimeout(() => {
-          this.success = null
-        }, 3000)
+          this.success = null;
+        }, 3000);
       } catch (error) {
-        this.error = error.response?.data?.error || 'Failed to save number'
+        console.error('Save error:', error);
+        this.error = error.response?.data?.error || 'Failed to save number';
       }
     },
     cancelEdit() {
@@ -135,5 +142,15 @@ export default {
 .success {
   color: green;
   margin-top: 10px;
+}
+
+.funny-message {
+  color: #666;
+  font-style: italic;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f8f8f8;
+  border-radius: 4px;
+  border-left: 3px solid #4CAF50;
 }
 </style>

@@ -31,6 +31,7 @@ const store = createStore({
     getNumber: async ({ commit }) => {
       const { data } = await axios.get(`${apiBaseUrl}/getNumber`);
       commit("setNumber", data.number);
+      return data; // Return the full data object which includes funnyMessage
     },
     saveNumber: async ({ commit }, number) => {
       await axios.post(`${apiBaseUrl}/saveNumber`, { number });

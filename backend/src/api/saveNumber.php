@@ -3,7 +3,6 @@ header('Content-Type: application/json');
 require_once __DIR__ . '/../../src/config.php';
 require_once __DIR__ . '/../../src/Database.php';
 
-session_start();
 if (!isset($_SESSION['user_id'])) {
     http_response_code(401);
     echo json_encode(['error' => 'Not authenticated']);

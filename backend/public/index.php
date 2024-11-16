@@ -49,6 +49,9 @@ switch ($request_uri) {
     case '/saveNumber':
         require_once '../src/api/saveNumber.php';
         break;
+    case '/checkAuth':
+        require_once '../src/api/checkAuth.php';
+        break;
     default:
         error_log("No route found for: " . $request_uri);
         http_response_code(404);

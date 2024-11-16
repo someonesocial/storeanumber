@@ -22,6 +22,17 @@ const store = createStore({
     },
   },
   actions: {
+    // Add new action to check session
+    checkAuth: async ({ commit }) => {
+      try {
+        const { data } = await axios.get(`${apiBaseUrl}/checkAuth`);
+        if (data.user) {
+          commit("setUser", data.user);
+        }
+      } catch (error) {
+        console.log("No active session");
+      }
+    },
     login: async ({ commit }, credentials) => {
       const { data } = await axios.post(`${apiBaseUrl}/login`, credentials);
       commit("setUser", data.user);
@@ -48,4 +59,8 @@ const app = createApp(App);
 app.use(store);
 app.component("LoginForm", LoginForm);
 app.component("NumberDisplay", NumberDisplay);
-app.mount("#app");
+
+// Check auth state when app loads
+store.dispatch("checkAuth").finally(() => {
+  app.mount("#app");
+});

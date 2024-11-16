@@ -3,7 +3,12 @@ require_once '../src/config.php';
 require_once '../src/Database.php';
 
 // Start session early
-session_start();
+session_start([
+    'cookie_httponly' => true,
+    'cookie_secure' => true,
+    'cookie_samesite' => 'Strict',
+    'gc_maxlifetime' => 3600
+]);
 
 // CORS headers
 header('Access-Control-Allow-Origin: http://localhost:8080');

@@ -15,6 +15,10 @@ COPY apache.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite headers
 RUN a2ensite 000-default.conf
 
+# Add security headers
+RUN echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
+RUN echo "ServerSignature Off" >> /etc/apache2/apache2.conf
+
 # Set working directory
 WORKDIR /var/www/html
 

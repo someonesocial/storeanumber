@@ -12,7 +12,10 @@ axios.defaults.withCredentials = true;
 
 // Store setup
 const store = createStore({
-  state: { user: null, number: null },
+  state: {
+    user: null, // Current logged in user
+    number: null, // User's stored number
+  },
   mutations: {
     setUser: (state, user) => (state.user = user),
     setNumber: (state, number) => (state.number = number),
@@ -22,7 +25,7 @@ const store = createStore({
     },
   },
   actions: {
-    // Add new action to check session
+    // Check session
     checkAuth: async ({ commit }) => {
       try {
         const { data } = await axios.get(`${apiBaseUrl}/checkAuth`);
@@ -33,21 +36,31 @@ const store = createStore({
         console.log("No active session");
       }
     },
+
+    // Handle user authentication
     login: async ({ commit }, credentials) => {
       const { data } = await axios.post(`${apiBaseUrl}/login`, credentials);
       commit("setUser", data.user);
     },
+
+    // Register new user
     register: ({ commit }, credentials) =>
       axios.post(`${apiBaseUrl}/register`, credentials),
+
+    // Get user's stored number and message
     getNumber: async ({ commit }) => {
       const { data } = await axios.get(`${apiBaseUrl}/getNumber`);
-      commit("setNumber", data.number);
+      commit("setNumber", data.number); // Update stored number
       return data; // Return the full data object which includes funnyMessage
     },
+
+    // Save new number
     saveNumber: async ({ commit }, number) => {
       await axios.post(`${apiBaseUrl}/saveNumber`, { number });
-      commit("setNumber", number);
+      commit("setNumber", number); // Update stored number
     },
+
+    // Log out user and clear state
     logout: async ({ commit }) => {
       await axios.post(`${apiBaseUrl}/logout`);
       commit("clearUser");
@@ -55,12 +68,13 @@ const store = createStore({
   },
 });
 
+// Initialize Vue app with store
 const app = createApp(App);
 app.use(store);
 app.component("LoginForm", LoginForm);
 app.component("NumberDisplay", NumberDisplay);
 
-// Check auth state when app loads
+// Check for existing session before mounting
 store.dispatch("checkAuth").finally(() => {
   app.mount("#app");
 });

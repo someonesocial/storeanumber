@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <h1>storeanumber</h1>
+    <!-- Conditionally show LoginForm or NumberDisplay based on auth state -->
     <LoginForm v-if="!user" />
     <NumberDisplay v-else />
   </div>
@@ -12,6 +13,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'App',
   computed: {
+    // Get user state from Vuex store
     ...mapState(['user'])
   }
 }

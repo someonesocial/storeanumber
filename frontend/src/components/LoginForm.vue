@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
     <div v-if="!showRegister">
+      <!-- Login form -->
       <h2>Login</h2>
       <form @submit.prevent="handleLogin" class="form">
         <div class="form-group">
@@ -15,12 +16,14 @@
       </form>
       <p>
         Don't have an account? 
+        <!-- Toggle to registration view -->
         <a href="#" @click.prevent="showRegister = true">Register here</a>
       </p>
       <p v-if="error" class="error">{{ error }}</p>
     </div>
     <div v-else>
       <h2>Register</h2>
+      <!-- Registration form -->
       <form @submit.prevent="handleRegister" class="form">
         <div class="form-group">
           <label>Username:</label>
@@ -34,6 +37,7 @@
       </form>
       <p>
         Already have an account? 
+        <!-- Toggle back to login view -->
         <a href="#" @click.prevent="showRegister = false">Login here</a>
       </p>
       <p v-if="error" class="error">{{ error }}</p>
@@ -48,29 +52,40 @@ export default {
     return {
       username: '',
       password: '',
-      showRegister: false,
+      showRegister: false, // Toggle between login/register forms
       error: null
     }
   },
   computed: {
+    // Map user from Vuex store
     ...mapState(['user'])
   },
   methods: {
+    // Import Vuex actions for authentication
     ...mapActions(['login', 'register']),
+
+    // Handle login form submission
     async handleLogin() {
       try {
         this.error = null
+        // Call Vuex login action with form data
         await this.login({ username: this.username, password: this.password })
       } catch (error) {
+        // Display error from API or fallback message
         this.error = error.response?.data?.error || 'Login failed'
       }
     },
+
+    // Handle registration form submission 
     async handleRegister() {
       try {
         this.error = null
+        // Call Vuex register action with form data
         await this.register({ username: this.username, password: this.password })
+        // Switch back to login view on success
         this.showRegister = false
       } catch (error) {
+        // Display error from API or fallback message
         this.error = error.response?.data?.error || 'Registration failed'
       }
     }

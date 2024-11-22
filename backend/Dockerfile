@@ -1,6 +1,6 @@
 FROM php:8.2-apache
 
-# Single RUN layer for all system operations to reduce image size
+# Install MariaDB driver and PHP extensions
 RUN apt-get update && apt-get install -y \
     libmariadb-dev \
     && docker-php-ext-install mysqli pdo pdo_mysql \
@@ -16,7 +16,7 @@ RUN a2ensite 000-default.conf
 # Copy application files
 COPY . /var/www/html/
 
-# Install Composer and dependencies in one layer
+# Install Composer and dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev --optimize-autoloader \
     && chown -R www-data:www-data /var/www/html

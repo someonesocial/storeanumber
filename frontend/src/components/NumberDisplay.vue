@@ -1,5 +1,6 @@
 <template>
   <div v-if="user" class="number-container">
+    <!-- Display current number or prompt for new one -->
     <h2>Your Number</h2>
     <div v-if="number !== null" class="current-number">
       <p>Your stored number is: {{ number }}</p>
@@ -8,6 +9,7 @@
     </div>
     <p v-else>You haven't stored a number yet.</p>
 
+    <!-- Number input form -->
     <form v-if="showEditForm || number === null" @submit.prevent="handleSaveNumber" class="form">
       <div class="form-group">
         <label>Enter a number:</label>
@@ -38,9 +40,11 @@ export default {
       funnyMessage: null
     }
   },
+  // Map user and number from Vuex store
   computed: {
     ...mapState(['user', 'number'])
   },
+  // Load number on component creation
   async created() {
     if (this.user) {
       const response = await this.getNumber();
@@ -48,17 +52,25 @@ export default {
     }
   },
   methods: {
+    // Import Vuex actions
     ...mapActions(['getNumber', 'saveNumber', 'logout']),
+
+    // Handle saving a new number
     async handleSaveNumber() {
       try {
         this.error = null;
+        // Save number to backend
         await this.saveNumber(this.newNumber);
-        // Update the number and get any funny message
+
+        // Get updated number and message
         const response = await this.getNumber();
         this.funnyMessage = response.funnyMessage;
+
+        // Reset form state
         this.success = 'Number saved successfully!';
         this.showEditForm = false;
         this.newNumber = null;
+        // Clear success message after 3s
         setTimeout(() => {
           this.success = null;
         }, 3000);
@@ -67,10 +79,14 @@ export default {
         this.error = error.response?.data?.error || 'Failed to save number';
       }
     },
+
+    // Cancel number editing
     cancelEdit() {
       this.showEditForm = false
       this.newNumber = null
     },
+
+    // Handle user logout
     async handleLogout() {
       await this.logout()
     }

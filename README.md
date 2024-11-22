@@ -246,11 +246,11 @@ Die Anwendung ist dann unter http://localhost:8080 erreichbar.
 
 ### Benutzerszenarien
 
-1. Registrierung:
-![grafik](https://github.com/user-attachments/assets/392e84a8-e6ed-4c5d-8715-1e4a36d75595)
-2. Anmeldung:
-![grafik](https://github.com/user-attachments/assets/de308d3c-b6e3-4f08-be4c-fb30c3b9a323)
-3. Nummer speichern:
-![grafik](https://github.com/user-attachments/assets/7280a635-d929-4cb9-9793-7fd6d551c9a5)
-4. Nummer ändern:
-![grafik](https://github.com/user-attachments/assets/d5eb86d1-63a4-4a37-b111-6462a5047aa2)
+1. Registrierung:  
+   ![grafik](https://github.com/user-attachments/assets/392e84a8-e6ed-4c5d-8715-1e4a36d75595)
+2. Anmeldung:  
+   ![grafik](https://github.com/user-attachments/assets/de308d3c-b6e3-4f08-be4c-fb30c3b9a323)
+3. Nummer speichern:  
+   ![grafik](https://github.com/user-attachments/assets/7280a635-d929-4cb9-9793-7fd6d551c9a5)
+4. Nummer ändern:  
+   ![grafik](https://github.com/user-attachments/assets/d5eb86d1-63a4-4a37-b111-6462a5047aa2)

@@ -139,12 +139,12 @@ case '/getNumber':
 
 #### API-Schnittstellen
 
-| Endpoint | Methode | Funktion |
-|----------|---------|-----------|
-| /api/login | POST | Authentifizierung |
-| /api/register | POST | Benutzerregistrierung |
-| /api/getNumber | GET | Nummer abrufen |
-| /api/saveNumber | POST | Nummer speichern |
+| Endpunkt | Methode | Beschreibung | Request Body | Response |
+|----------|---------|--------------|--------------|-----------|
+| /api/login | POST | Benutzeranmeldung | {username, password} | {user: {id, username}} |
+| /api/register | POST | Neuen Benutzer anlegen | {username, password} | {message: "Erfolgreich registriert"} |
+| /api/getNumber | GET | Gespeicherte Nummer abrufen | - | {number, funnyMessage} |
+| /api/saveNumber | POST | Nummer speichern/aktualisieren | {number} | {message: "Erfolgreich gespeichert"} |
 
 #### UI-Entwurf
 

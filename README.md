@@ -248,7 +248,7 @@ Die Anwendung ist dann unter http://localhost:8080 erreichbar.
 
 1. Registrierung:  
    ![grafik](https://github.com/user-attachments/assets/dcf866c8-1c65-4abc-9ec9-4f5b4bde2f4c)
-2. Anmeldung:
+2. Anmeldung:  
    ![grafik](https://github.com/user-attachments/assets/036cd468-579a-42bb-81d4-ed73a3442c0d)
 3. Nummer speichern:  
    ![grafik](https://github.com/user-attachments/assets/9a70ccbc-ef09-4dfe-9b0f-2d42b9354710)
